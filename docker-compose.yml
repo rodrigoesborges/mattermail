@@ -1,0 +1,14 @@
+services:
+  mattermail:
+    build: .
+    restart: unless-stopped
+    environment:
+      MATTERMAIL_IMAP_PASSWORD: "${MATTERMAIL_IMAP_PASSWORD}"
+      MATTERMAIL_SMTP_PASSWORD: "${MATTERMAIL_SMTP_PASSWORD}"
+      MATTERBRIDGE_TOKEN: "${MATTERBRIDGE_TOKEN}"
+    volumes:
+      - ./mattermail.toml:/etc/mattermail/mattermail.toml:ro
+    # When matterbridge runs on the host, use "host.docker.internal:4242"
+    # (or the host IP) in mattermail.toml instead of 127.0.0.1.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

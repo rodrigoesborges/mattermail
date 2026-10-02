@@ -1,0 +1,56 @@
+# mattermail configuration
+# Copy to mattermail.toml and adjust. All string values support ${ENV_VAR}
+# expansion, so credentials can come from the environment.
+
+[log]
+level = "info"          # debug | info | warn | error
+format = "text"         # text | json
+
+[imap]
+# Mailbox watched for incoming mail (email -> chat direction).
+server = "imap.example.com:993"
+username = "bridge@example.com"
+password = "${MATTERMAIL_IMAP_PASSWORD}"
+folder = "INBOX"
+tls = "ssl"                     # ssl | starttls | none
+insecure_skip_verify = false
+poll_interval = "30s"           # how often to check for new mail
+reconnect_interval = "10s"      # wait before reconnecting a broken session
+
+[smtp]
+# Account used to deliver chat -> email messages.
+server = "smtp.example.com:465"
+username = "bridge@example.com"
+password = "${MATTERMAIL_SMTP_PASSWORD}"
+from = "bridge@example.com"
+from_name = "MatterMail"
+tls = "ssl"                     # ssl | starttls | none
+insecure_skip_verify = false
+
+[matterbridge]
+# The api bridge configured in matterbridge.toml ([api.mattermail]).
+url = "http://127.0.0.1:4242"
+token = "${MATTERBRIDGE_TOKEN}" # empty when the api bridge has no Token set
+reconnect_interval = "5s"
+
+[mail_in]
+# email -> chat conversion.
+username_format = "{name} ({addr})" # how the sender appears in chat
+include_subject = true              # prefix the message with the subject
+include_attachments = true          # forward attachments to chat
+max_attachment_mb = 10
+# Only bridge mail from these senders; empty = allow everyone.
+# Patterns: alice@example.org | @example.org | *.example.org | *
+allowed_from = [
+#  "alice@example.org",
+#  "@trusted.example.com",
+]
+
+# One [[route]] per matterbridge gateway that should be mirrored to email
+# (chat -> email direction).
+[[route]]
+gateway = "friends"            # must match [[gateway]].name in matterbridge.toml
+# channel = "api"              # optional extra match on the message channel
+to = ["alice@example.org", "bob@example.org"]
+subject_format = "[{gateway}] {nick}"
+body_format = "{nick}:\n\n{text}"

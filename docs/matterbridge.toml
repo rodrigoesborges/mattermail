@@ -1,0 +1,26 @@
+# matterbridge side of the bridge.
+# Add to your matterbridge.toml, next to your existing accounts and gateways.
+
+[api.mattermail]
+BindAddress = "127.0.0.1:4242"
+Buffer = 1000
+Token = "change-me"
+
+# Example chat account (adjust to what you already have).
+[whatsapp.friends]
+SessionFile = "/var/lib/matterbridge/whatsapp.session"
+
+[[gateway]]
+name = "friends"          # referenced by mattermail's [[route]].gateway
+enable = true
+
+[[gateway.inout]]
+account = "whatsapp.friends"
+channel = "Family"        # the group that gets bridged
+
+[[gateway.inout]]
+account = "api.mattermail"
+channel = "api"
+
+# Recommended RemoteNickFormat for messages coming from email:
+#   [[gateway.inout]] overrides can set RemoteNickFormat = "{NICK}: "

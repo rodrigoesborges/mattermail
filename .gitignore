@@ -1,0 +1,5 @@
+mattermail
+/mattermail.toml
+dist/
+*.test
+*.out
