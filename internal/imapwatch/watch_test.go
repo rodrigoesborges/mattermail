@@ -54,6 +54,8 @@ func startMemServer(t *testing.T) string {
 		if err != nil {
 			return fmt.Errorf("dial: %w", err)
 		}
+		// Wrapped in a closure: `defer cl.Logout().Wait()` would evaluate
+		// Logout() immediately and send LOGOUT before the LOGIN command.
 		defer func() { _ = cl.Logout().Wait() }()
 		if err := cl.Login("bridge@example.com", "pass").Wait(); err != nil {
 			return fmt.Errorf("login: %w", err)
