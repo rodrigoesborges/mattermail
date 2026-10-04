@@ -23,7 +23,8 @@ no patched binary, works with the stock matterbridge you already run.
                 SMTP send       └───────────┘   WS /api/websocket  └──────────────┘
 ```
 
-See [ROADMAP.md](ROADMAP.md) for architecture notes, prior art and the development plan.
+See [ROADMAP.md](ROADMAP.md) for architecture notes, prior art and the development plan, or
+[docs/TUTORIAL.md](docs/TUTORIAL.md) for a step-by-step getting-started tutorial.
 
 ## Quick start
 
